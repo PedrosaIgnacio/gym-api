@@ -10,6 +10,7 @@ interface IClient {
   fechaNacimiento: string;
   sexo: string;
   tipoDoc: number;
+  fotoPerfil: string;
 }
 
 //GET CLIENTES
@@ -47,6 +48,7 @@ export const postClient = async (client: IClient) => {
     .input("fechaNacimiento", sql.VarChar, client.fechaNacimiento)
     .input("sexo", sql.VarChar, client.sexo)
     .input("TipoDoc", sql.Int, client.tipoDoc)
+    .input("fotoPerfil", sql.VarChar, client.fotoPerfil)
     .execute("sp_insert_cliente");
 };
 
