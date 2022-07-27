@@ -19,7 +19,7 @@ export const getClients = async () => {
   const clients = await pool
     .request()
     .query(
-      "select c.id, c.nombre, c.apellido, c.email, c.telefono, c.documento, c.sexo, c.fechaNacimiento, t.tipo as 'TipoDoc' from Cliente c join TipoDoc t on t.id = c.TipoDoc"
+      "select c.id, c.nombre, c.apellido, c.email, c.telefono, c.documento, c.sexo, c.fechaNacimiento, c.fotoPerfil, t.tipo as 'tipoDoc' from Cliente c join TipoDoc t on t.id = c.tipoDoc order by c.id desc"
     );
   return clients.recordsets;
 };
@@ -37,17 +37,18 @@ export const getClientById = async (idParam: string) => {
 
 //POST CLIENTE
 export const postClient = async (client: IClient) => {
+  console.log(client);
   const pool = await sql.connect(config);
   const insertClient = await pool
     .request()
     .input("nombre", sql.VarChar, client.nombre)
     .input("apellido", sql.VarChar, client.apellido)
     .input("email", sql.VarChar, client.email)
-    .input("telefono", sql.Int, client.telefono)
-    .input("documento", sql.Int, client.documento)
+    .input("telefono", sql.Numeric, client.telefono)
+    .input("documento", sql.VarChar, client.documento)
     .input("fechaNacimiento", sql.VarChar, client.fechaNacimiento)
     .input("sexo", sql.VarChar, client.sexo)
-    .input("TipoDoc", sql.Int, client.tipoDoc)
+    .input("tipoDoc", sql.Int, client.tipoDoc)
     .input("fotoPerfil", sql.VarChar, client.fotoPerfil)
     .execute("sp_insert_cliente");
 };
