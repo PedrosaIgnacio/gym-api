@@ -1,3 +1,4 @@
+
 import { getTipoDocs } from "./../controllers/tipodocs.controller";
 import express, { response } from "express";
 import bodyParser, { json } from "body-parser";
@@ -8,6 +9,10 @@ import {
   deleteClient,
   getClientById,
 } from "../controllers/client.controller";
+import {
+  addPhoto, getLastUserAdded
+} from "../controllers/user.contoller";
+
 const app = express();
 const router = express.Router();
 
@@ -49,5 +54,22 @@ router.route("/tipodocs").get((req, res) => {
     res.json(r[0]);
   });
 });
+
+router.route("/users/addphoto").post((req, res) => {
+  addPhoto(req.body)
+    .then((r: any) => {
+      res.json("Foto Cambiada");
+    })
+    .catch((e: any) => {
+      res.json({ code: e.code, message: e.message });
+    });
+});
+
+router.route("/users/getlastuseradded").get((req, res) => {
+  getLastUserAdded().then((r: any) => {
+    res.json(r[0]);
+  });
+});
+
 
 app.listen(3001, () => console.log("Server on port 3001"));
